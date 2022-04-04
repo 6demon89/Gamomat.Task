@@ -58,13 +58,19 @@ namespace SlotMachine.Core
             return result;
         }
 
-        public (List<WinLine> winingLines, int winningAmount) Play()
+        /// <summary>
+        /// This method will randomize the slotmachine matrix and calculate the winning line including winning amount
+        /// </summary>
+        /// <returns>
+        /// GameResult which contains the new matrix and win state information
+        /// </returns>
+        public GameResult Play()
         {
             List<SlotSymbol[]> currentMatrix = RandomizeReelsPosition();
             foreach (var item in m_Reels)
                 currentMatrix.Add(item.GetSymbolsFromPosition(m_Randomg.Next(item.PossitionsAvalable), m_SymbolsCount).ToArray());
-            var result = GetWinLines(currentMatrix);
-            return (result, GetWinningamount(result));
+            var winningLines = GetWinLines(currentMatrix);
+            return new GameResult(winningLines, GetWinningamount(winningLines), currentMatrix.ToArray());
         }
 
     }
